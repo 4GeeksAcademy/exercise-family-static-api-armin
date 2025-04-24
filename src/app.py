@@ -50,24 +50,24 @@ def get_one_member(member_id):
 # 3) Añadir (POST) un miembro
 @app.route('/members', methods=['POST'])
 def add_member():
-    # Verificar si la solicitud tiene datos JSON
-    if not request.json:
-        return jsonify({"message": "Missing JSON in request"}), 400
-    
-    # Obtener los datos del miembro del cuerpo de la solicitud
-    member_data = request.json
-    
-    # Validar que los datos requeridos estén presentes
-    required_fields = ['first_name', 'age', 'lucky_numbers']
-    for field in required_fields:
-        if field not in member_data:
-            return jsonify({"message": f"Missing required field: {field}"}), 400
-    
-    # Añadir el miembro a la familia
-    jackson_family.add_member(member_data)
-    
-    # No necesitamos devolver el miembro, solo un código de éxito
-    return jsonify({}), 200
+    try:
+        # Intentar obtener los datos del cuerpo de la solicitud
+        member_data = request.get_json(force=True)
+        
+        # Validar que los datos requeridos estén presentes
+        required_fields = ['first_name', 'age', 'lucky_numbers']
+        for field in required_fields:
+            if field not in member_data:
+                return jsonify({"message": f"Missing required field: {field}"}), 400
+        
+        # Añadir el miembro a la familia
+        jackson_family.add_member(member_data)
+        
+        # No necesitamos devolver el miembro, solo un código de éxito
+        return jsonify({}), 200
+        
+    except Exception as e:
+        return jsonify({"message": f"Error processing request: {str(e)}"}), 400
 
 
 
