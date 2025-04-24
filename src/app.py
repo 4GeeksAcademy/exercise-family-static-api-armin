@@ -61,10 +61,10 @@ def add_member():
                 return jsonify({"message": f"Missing required field: {field}"}), 400
         
         # Añadir el miembro a la familia
-        jackson_family.add_member(member_data)
+        added_member = jackson_family.add_member(member_data)
         
         # No necesitamos devolver el miembro, solo un código de éxito
-        return jsonify({}), 200
+        return jsonify({"id": added_member['id']}), 200
         
     except Exception as e:
         return jsonify({"message": f"Error processing request: {str(e)}"}), 400

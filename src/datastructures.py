@@ -41,9 +41,9 @@ class FamilyStructure:
 
     def add_member(self, member):
         if 'id' not in member or member ['id'] is None:
-            member['id'] = self._generate_id
+            member['id'] = self._generate_id()
 
-        member['las_name'] = self.last_name
+        member['last_name'] = self.last_name
 
         self._members.append(member)
 
